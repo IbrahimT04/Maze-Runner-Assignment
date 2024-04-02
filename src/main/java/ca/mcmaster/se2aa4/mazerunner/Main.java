@@ -59,6 +59,11 @@ public class Main {
                 logger.debug("Tremaux algorithm chosen.");
                 solver = new TremauxSolver();
             }
+            // Added now algorithm (Currently in testing phase)
+            case "bfs" -> {
+                logger.debug("Breadth First Search algorithm chosen.");
+                solver = new BFSSolver();
+            }
             default -> {
                 throw new Exception("Maze solving method '" + method + "' not supported.");
             }
