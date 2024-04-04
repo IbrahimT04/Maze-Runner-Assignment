@@ -37,6 +37,8 @@ public class Maze {
             }
             maze.add(newLine);
         }
+        // Making sure to close reader
+        reader.close();
         start = findStart();
         end = findEnd();
     }
