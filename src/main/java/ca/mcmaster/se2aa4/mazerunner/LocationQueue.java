@@ -11,11 +11,13 @@ public class LocationQueue {
     private Queue <Position> posQueue; 
     private Queue <Direction> dirQueue;
     private Queue <BigInteger> indexQueue;
+    private Integer length;
 
     public LocationQueue(Position pos, Direction dir, BigInteger index){
         this.position = pos;
         this.direction = dir;
         this.pathIndex = index;
+        this.length = 0;
         posQueue = new ArrayDeque<Position>();
         dirQueue = new ArrayDeque<Direction>();
         indexQueue = new ArrayDeque<BigInteger>();
@@ -25,6 +27,7 @@ public class LocationQueue {
         this.posQueue.add(pos);
         this.dirQueue.add(dir);
         this.indexQueue.add(index);
+        this.length++;
     }
     public void updateQueue(){
         this.position = posQueue.remove();
@@ -39,6 +42,9 @@ public class LocationQueue {
     }
     public BigInteger getIndex(){
         return this.pathIndex;
+    }
+    public boolean isEmpty(){
+        return this.length == 0;
     }
 
 }
