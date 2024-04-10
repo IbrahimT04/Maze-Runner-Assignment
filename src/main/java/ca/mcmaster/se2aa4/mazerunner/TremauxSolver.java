@@ -66,22 +66,6 @@ public class TremauxSolver implements MazeSolver {
     }
 
     /**
-     * Get the number of neighbors that have at least one mark.
-     *
-     * @param neighbors Neighbors to check
-     * @return Number of marked neighbors
-     */
-    private int nbMarkedNeighbors(List<Position> neighbors) {
-        int nbMarkedNeighbors = 0;
-        for (Position n : neighbors) {
-            if (marks[n.y()][n.x()] != 0) {
-                nbMarkedNeighbors += 1;
-            }
-        }
-        return nbMarkedNeighbors;
-    }
-
-    /**
      * Chose a viable neighbor by sorting the neighbors by the number of
      * marks and picking the first.
      *
@@ -132,31 +116,31 @@ public class TremauxSolver implements MazeSolver {
             Position rightPos = pos.move(dir.turnRight());
             Position leftPos = pos.move(dir.turnLeft());
             Position forwardPos = pos.move(dir);
-            if (isInBounds(rightPos, maze.getSizeX(), maze.getSizeY()) && !maze.isWall(rightPos) && marks[rightPos.y()][rightPos.x()] == 1) {
+            if (maze.isInBounds(rightPos) && !maze.isWall(rightPos) && marks[rightPos.y()][rightPos.x()] == 1) {
                 path.addStep('R');
                 path.addStep('F');
                 dir = dir.turnRight();
                 pos = rightPos;
-            } else if (isInBounds(leftPos, maze.getSizeX(), maze.getSizeY()) && !maze.isWall(leftPos) && marks[leftPos.y()][leftPos.x()] == 1) {
+            } else if (maze.isInBounds(leftPos) && !maze.isWall(leftPos) && marks[leftPos.y()][leftPos.x()] == 1) {
                 path.addStep('L');
                 path.addStep('F');
                 dir = dir.turnLeft();
                 pos = leftPos;
-            } else if (isInBounds(forwardPos, maze.getSizeX(), maze.getSizeY()) && !maze.isWall(forwardPos) && marks[forwardPos.y()][forwardPos.x()] == 1) {
+            } else if (maze.isInBounds(forwardPos) && !maze.isWall(forwardPos) && marks[forwardPos.y()][forwardPos.x()] == 1) {
                 path.addStep('F');
                 pos = forwardPos;
             } else {
-                if (isInBounds(rightPos, maze.getSizeX(), maze.getSizeY()) && !maze.isWall(rightPos) && marks[rightPos.y()][rightPos.x()] == 0) {
+                if (maze.isInBounds(rightPos) && !maze.isWall(rightPos) && marks[rightPos.y()][rightPos.x()] == 0) {
                     path.addStep('R');
                     path.addStep('F');
                     dir = dir.turnRight();
                     pos = rightPos;
-                } else if (isInBounds(leftPos, maze.getSizeX(), maze.getSizeY()) && !maze.isWall(leftPos) && marks[leftPos.y()][leftPos.x()] == 0) {
+                } else if (maze.isInBounds(leftPos) && !maze.isWall(leftPos) && marks[leftPos.y()][leftPos.x()] == 0) {
                     path.addStep('L');
                     path.addStep('F');
                     dir = dir.turnLeft();
                     pos = leftPos;
-                } else if (isInBounds(forwardPos, maze.getSizeX(), maze.getSizeY()) && !maze.isWall(forwardPos) && marks[forwardPos.y()][forwardPos.x()] == 0) {
+                } else if (maze.isInBounds(forwardPos) && !maze.isWall(forwardPos) && marks[forwardPos.y()][forwardPos.x()] == 0) {
                     path.addStep('F');
                     pos = forwardPos;
                 } else {
@@ -164,20 +148,6 @@ public class TremauxSolver implements MazeSolver {
                 }
             }
         }
-
-
         return path;
-    }
-
-    /**
-     * Check if position is in the maze bounds.
-     *
-     * @param position Position to validate
-     * @param sizeX    Maze horizontal (X) size
-     * @param sizeY    Maze vertical (Y) size
-     * @return If position is in bounds
-     */
-    private boolean isInBounds(Position position, int sizeX, int sizeY) {
-        return position.x() >= 0 && position.x() < sizeX && position.y() >= 0 && position.y() < sizeY;
     }
 }

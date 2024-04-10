@@ -1,91 +1,12 @@
-@startuml Algorithm
+@startuml SolvingMaze
+interface MazeFunctions
 
-package "ca.mcmaster.se2aa4.mazerunner" {
-    class Runner {
-        - main(String[]): void
-    }
-    
-    interface Movement {
-        + needsInstruction(): boolean
-        + goDirection(Direction): void
-        + goRight(): void
-        + goLeft(): void
-        + goForward(): void
-        + useRadar(Direction): void
-        + scan(): void
-        + stop(): void
-        + getNextInstruction(): String
-    }
-    class JSONMover {
-        
-    }
-    class ExploringDrone {
-        
-        
-    }
-    
-    
+
+MazeFunctions --|> PathChecker
+
+class PathChecker {
+    + PathChecker(CommandLine cmd, Maze maze): void
+    + impliment(): void
 }
 
-package "ca.mcmaster.se2aa4.island.team209.Radio" {
-    class IslandAlgorithm {
-        
-        + decision(): String
-        + takeInfo(String): void
-        + finalReport(): String
-    }
-    interface ExploreAlgorithm {
-        + decision(): String
-        + takeInfo(String): void
-        + finalReport(): String
-    }
-    class Explorer {
-                
-        + takeDecision(): String
-        + acknowledgeResults(String): void
-        + deliverFinalReport(): String
-    }
-}
-
-package "ca.mcmaster.se2aa4.island.team209.POI" {
-    class NearestCreekToSitePOIHandler {
-        
-    }
-    class POI {
-        
-        + POI(String, Point)
-        + closerPoint(POI, POI): POI
-    }
-    interface POIHandler {
-        + addPoint(String, POI): void
-        + getReport(): String
-    }
-}
-
-package "ca.mcmaster.se2aa4.island.team209.Position" {
-    class Point {
-        
-    }
-    enum Direction {
-        N
-        E
-        S
-        W
-    }
-}
-
-IslandAlgorithm *--  Movement
-IslandAlgorithm *--  POIHandler
-IslandAlgorithm *--  ExploringDrone
-IslandAlgorithm *--  Point
-IslandAlgorithm *--  Direction
-IslandAlgorithm ..|> ExploreAlgorithm
-Explorer *-- ExploreAlgorithm
-POI "1" *--> "0..1" Point
-ExploringDrone *-- Direction
-ExploringDrone *-- Point
-JSONMover ..|> Movement
-JSONMover *-- ExploringDrone
-NearestCreekToSitePOIHandler ..|> POIHandler
-NearestCreekToSitePOIHandler *-- POI
- Runner --> Explorer : References
+@enduml

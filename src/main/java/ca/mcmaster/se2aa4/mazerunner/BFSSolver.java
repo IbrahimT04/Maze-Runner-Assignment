@@ -37,9 +37,6 @@ public class BFSSolver implements MazeSolver {
                 marked[b][a]= false;
             }
         }
-        int x = maze.getSizeX();
-        int y = maze.getSizeY();
-        
         LocationQueue currentLocat = new LocationQueue(pos, dir, i);
 
         while (!pos.equals(exit) && !currentLocat.isEmpty()) {
@@ -65,28 +62,26 @@ public class BFSSolver implements MazeSolver {
                 Position forwardPos = pos.move(dir);
                 BigInteger forwardIndex = leftIndex.add(one);
 
-                if (isInBounds(leftPos, x, y) && !maze.isWall(leftPos) && !marked[leftPos.y()][leftPos.x()]){
-                    
-                    currentLocat.add(leftPos, dir.turnLeft(), leftIndex);
+                if (maze.isInBounds(leftPos) && !maze.isWall(leftPos) && !marked[leftPos.y()][leftPos.x()]){
                     // Ternary tree add left node with value "L"
+                    currentLocat.add(leftPos, dir.turnLeft(), leftIndex);
                 }
 
-                if (isInBounds(rightPos, x, y) && !maze.isWall(rightPos) && !marked[rightPos.y()][rightPos.x()]){
-                    
-                    currentLocat.add(rightPos, dir.turnRight(), rightIndex);
+                if (maze.isInBounds(rightPos) && !maze.isWall(rightPos) && !marked[rightPos.y()][rightPos.x()]){
                     // Ternary tree add right node with value "R"
+                    currentLocat.add(rightPos, dir.turnRight(), rightIndex);
                 }
                 
-                if (isInBounds(forwardPos, x, y) && !maze.isWall(forwardPos) && !marked[forwardPos.y()][forwardPos.x()] ){
-                    
-                    currentLocat.add(forwardPos, dir, forwardIndex);
+                if (maze.isInBounds(forwardPos) && !maze.isWall(forwardPos) && !marked[forwardPos.y()][forwardPos.x()]){
                     // Ternary tree add middle node with value "F"
+                    currentLocat.add(forwardPos, dir, forwardIndex);
                 }
             }
         }
-        if (!pos.equals(exit))throw new RuntimeException("Algorithm Error");
+        if (!pos.equals(exit))throw new RuntimeException("Algorithm Error: Exit not found or doesn't exist");
         return i; 
     }
+
     private Path retraceSteps(BigInteger index){
         Stack<Character> tempStorage = new Stack<Character>();
         Path path = new Path();
@@ -97,7 +92,6 @@ public class BFSSolver implements MazeSolver {
         BigInteger modCheck;
 
         while (!index.equals(one)){
-
             modCheck = index.mod(three);
 
             if (modCheck.equals(one)){
@@ -116,13 +110,7 @@ public class BFSSolver implements MazeSolver {
             index = index.add(one);
             index = index.divide(three);
         }
-
         while (!tempStorage.isEmpty()) path.addStep(tempStorage.pop());
-
         return path;
-    }
-    
-    private boolean isInBounds(Position position, int sizeX, int sizeY) {
-        return position.x() >= 0 && position.x() < sizeX && position.y() >= 0 && position.y() < sizeY;
     }
 }

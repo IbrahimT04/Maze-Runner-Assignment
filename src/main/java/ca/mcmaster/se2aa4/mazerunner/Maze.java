@@ -121,46 +121,18 @@ public class Maze {
         return this.maze.size();
     }
 
-    /**
-     * Check if path is valid for Maze.
+    
+     /**
+     * Check if position is in the maze bounds.
      *
-     * @param path The path to valid
-     * @return If path is valid
+     * @param position Position to validate
+     * @param sizeX    Maze horizontal (X) size
+     * @param sizeY    Maze vertical (Y) size
+     * @return If position is in bounds
      */
-    public Boolean validatePath(Path path) {
-        return validatePathDir(path, getStart(), Direction.RIGHT, getEnd()) || validatePathDir(path, getEnd(), Direction.LEFT, getStart());
-    }
-
-    /**
-     * Check if path is valid from starting to end position.
-     *
-     * @param path Path
-     * @param startPos Starting position
-     * @param startDir Starting direction
-     * @param endPos Ending position
-     * @return If path is valid
-     */
-    private Boolean validatePathDir(Path path, Position startPos, Direction startDir, Position endPos) {
-        Position pos = startPos;
-        Direction dir = startDir;
-        for (char c : path.getPathSteps()) {
-            switch (c) {
-                case 'F' -> {
-                    pos = pos.move(dir);
-
-                    if (pos.x() >= getSizeX() || pos.y() >= getSizeY() || pos.x() < 0 || pos.y() < 0) {
-                        return false;
-                    }
-                    if (isWall(pos)) {
-                        return false;
-                    }
-                }
-                case 'R' -> dir = dir.turnRight();
-                case 'L' -> dir = dir.turnLeft();
-            }
-            logger.debug("Current Position: " + pos);
-        }
-
-        return pos.equals(endPos);
+    // I moved this function from the tremaux and bfs classes into this one so it would not be repeated twice
+    public boolean isInBounds(Position position) {
+        return position.x() >= 0 && position.x() < getSizeX() && position.y() >= 0 && position.y() < getSizeY();
     }
 }
+

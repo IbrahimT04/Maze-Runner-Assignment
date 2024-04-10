@@ -21,16 +21,16 @@ public class Main {
             Maze maze = new Maze(filePath);
 
             if (cmd.getOptionValue("baseline") != null){
-                function = new Benchmark(cmd, maze);
+                function = new Benchmark(cmd);
 
             } else if (cmd.getOptionValue("p") != null) {
-                function = new PathChecker(cmd, maze);  
+                function = new PathChecker(cmd);  
                               
             } else {
-                function = new PathFinder(cmd, maze);
+                function = new PathFinder(cmd);
             }
 
-            function.impliment();
+            function.impliment(maze);
 
         } catch (Exception e) {
             System.err.println("MazeSolver failed.  Reason: " + e.getMessage());

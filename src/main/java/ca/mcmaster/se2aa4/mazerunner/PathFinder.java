@@ -5,14 +5,12 @@ import org.apache.logging.log4j.Logger;
 
 public class PathFinder implements MazeFunctions {
 
-    
     private static final Logger logger = LogManager.getLogger();
     protected CommandLine cmd;
     protected Maze maze;
     
-    public PathFinder(CommandLine cmd, Maze maze){
+    public PathFinder(CommandLine cmd){
         this.cmd = cmd;
-        this.maze = maze;
     }
 
     /**
@@ -20,12 +18,12 @@ public class PathFinder implements MazeFunctions {
      * @throws Exception If provided method does not exist
      */
     @Override
-    public void impliment() throws Exception {
+    public void impliment(Maze maze) throws Exception {
+        this.maze = maze;
         logger.info("Finding Path");
         String method = cmd.getOptionValue("method", "righthand");
         MazeSolver solver = commandReader(method);
         Path path = solver.solve(maze);
-
         logger.info(path.getFactorizedForm());
     }
     
