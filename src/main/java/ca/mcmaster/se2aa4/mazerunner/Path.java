@@ -122,7 +122,7 @@ public class Path {
             if (i != algoPath.size()) {
                 sb.append(' ');
             }
-            i--;
+            
         }
 
         return sb.toString();

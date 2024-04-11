@@ -3,6 +3,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PathTest {
+    
     @Test
     void getCanonicalForm() {
         Path path = new Path("FLFFFFFRFFRFFLFFFFFFRFFFFLF");
@@ -31,4 +32,5 @@ class PathTest {
 
         assertEquals("FFFFFFFFFF RRRRRRRRRRR", path.getCanonicalForm());
     }
+    
 }
