@@ -18,7 +18,7 @@ public class PathFinder implements MazeFunctions {
      * @throws Exception If provided method does not exist
      */
     @Override
-    public void impliment(Maze maze) throws Exception {
+    public void impliment(Maze maze) throws IllegalArgumentException {
         this.maze = maze;
         logger.info("Finding Path");
         String method = cmd.getOptionValue("method", "righthand");
@@ -27,7 +27,7 @@ public class PathFinder implements MazeFunctions {
         logger.info(path.getFactorizedForm());
     }
     
-    protected static MazeSolver commandReader(String algorithm) throws Exception{
+    protected static MazeSolver commandReader(String algorithm) throws IllegalArgumentException{
         switch (algorithm) {
             case "righthand" -> {
                 logger.debug("RightHand method chosen.");
@@ -42,7 +42,7 @@ public class PathFinder implements MazeFunctions {
                 return new BFSSolver();
             }
             default -> {
-                throw new Exception("Maze solving method '" + algorithm + "' not supported.");
+                throw new IllegalArgumentException("Maze solving method '" + algorithm + "' not supported.");
             }
         }
     }

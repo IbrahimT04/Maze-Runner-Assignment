@@ -13,18 +13,18 @@ public class RightHandSolver implements MazeSolver {
         Position currentPos = maze.getStart();
         Direction dir = Direction.RIGHT;
         while (!currentPos.equals(maze.getEnd())) {
-            if (!maze.isWall(currentPos.move(dir.turnRight()))) {
+            if (Boolean.FALSE.equals(maze.isWall(currentPos.move(dir.turnRight())))) {
                 // Turn right and move forward if not a wall
                 dir = dir.turnRight();
                 path.addStep('R');
                 currentPos = currentPos.move(dir);
                 path.addStep('F');
             } else {
-                if (!maze.isWall(currentPos.move(dir))) {
+                if (Boolean.FALSE.equals(maze.isWall(currentPos.move(dir)))) {
                     // Go forward if not a wall
                     currentPos = currentPos.move(dir);
                     path.addStep('F');
-                } else if (!maze.isWall(currentPos.move(dir.turnLeft()))) {
+                } else if (Boolean.FALSE.equals(maze.isWall(currentPos.move(dir.turnLeft())))) {
                     // Go left if not a wall
                     dir = dir.turnLeft();
                     path.addStep('L');
@@ -37,7 +37,7 @@ public class RightHandSolver implements MazeSolver {
                     path.addStep('R');
                 }
             }
-            logger.debug("Current Position: " + currentPos.toString() + "\n Current Path: " + path.getCanonicalForm());
+            logger.debug("Current Position: {} %n Current Path: {}", currentPos, path.getCanonicalForm());
         }
 
         return path;

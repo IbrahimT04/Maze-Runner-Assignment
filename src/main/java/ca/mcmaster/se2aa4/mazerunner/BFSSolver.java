@@ -4,8 +4,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.math.BigInteger;
-import java.util.Stack;
-
+import java.util.ArrayDeque;
+import java.util.Deque;
 public class BFSSolver implements MazeSolver {
     private static final Logger logger = LogManager.getLogger();
     private boolean[][] marked;
@@ -21,14 +21,15 @@ public class BFSSolver implements MazeSolver {
         logger.debug("Tracing path...");
         return retraceSteps(exitIndex);
     }
+
     private BigInteger bfsSearch(){
         
         Direction dir = Direction.RIGHT;
         Position pos = maze.getStart();
-        BigInteger i = new BigInteger("1");
+        BigInteger i = BigInteger.valueOf(1);
         
-        BigInteger one = new BigInteger("1");
-        BigInteger three = new BigInteger("3");
+        BigInteger one = BigInteger.valueOf(1);
+        BigInteger three = BigInteger.valueOf(3);
         
 
         Position exit = maze.getEnd();
@@ -46,9 +47,8 @@ public class BFSSolver implements MazeSolver {
             pos = currentLocat.getPosition();
             dir = currentLocat.getDirection();
             i = currentLocat.getIndex();
-
             
-            if (marked[pos.y()][pos.x()]==false){
+            if (!marked[pos.y()][pos.x()]){
                 
                 // Go to the position (Use ternary tree)
                 marked[pos.y()][pos.x()] = true;
@@ -78,34 +78,34 @@ public class BFSSolver implements MazeSolver {
                 }
             }
         }
-        if (!pos.equals(exit))throw new RuntimeException("Algorithm Error: Exit not found or doesn't exist");
+        if (!pos.equals(exit))throw new IllegalStateException("Algorithm Error: Exit not found or doesn't exist");
         return i; 
     }
 
     private Path retraceSteps(BigInteger index){
-        Stack<Character> tempStorage = new Stack<Character>();
+        Deque<Character> tempStorage = new ArrayDeque<>();
         Path path = new Path();
-        BigInteger zero = new BigInteger("0");
-        BigInteger one = new BigInteger("1");
-        BigInteger two = new BigInteger("2");
-        BigInteger three = new BigInteger("3");
+        BigInteger zero = BigInteger.valueOf(0);
+        BigInteger one = BigInteger.valueOf(1);
+        BigInteger two = BigInteger.valueOf(2);
+        BigInteger three = BigInteger.valueOf(3);
         BigInteger modCheck;
 
         while (!index.equals(one)){
             modCheck = index.mod(three);
 
             if (modCheck.equals(one)){
-                tempStorage.add('F');
+                tempStorage.push('F');
 
             } else if(modCheck.equals(two)){
-                tempStorage.add('F');
-                tempStorage.add('R');
+                tempStorage.push('F');
+                tempStorage.push('R');
 
             } else if(modCheck.equals(zero)){
-                tempStorage.add('F');
-                tempStorage.add('L');
+                tempStorage.push('F');
+                tempStorage.push('L');
 
-            } else throw new RuntimeException("Division Error"); 
+            } else throw new IllegalStateException("Division Error"); 
             
             index = index.add(one);
             index = index.divide(three);

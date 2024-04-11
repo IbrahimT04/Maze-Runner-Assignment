@@ -22,10 +22,10 @@ public class PathChecker implements MazeFunctions {
     public void impliment(Maze maze){
         this.maze = maze;
         Path path = new Path(cmd.getOptionValue("p"));
-        if (validatePath(path)) {
-            System.out.println("correct path");
+        if (Boolean.TRUE.equals(validatePath(path))) {
+            logger.info("correct path %n");
         } else {
-            System.out.println("incorrect path");
+            logger.info("incorrect path %n");
         }
     }
 
@@ -60,14 +60,15 @@ public class PathChecker implements MazeFunctions {
                     if (pos.x() >= maze.getSizeX() || pos.y() >= maze.getSizeY() || pos.x() < 0 || pos.y() < 0) {
                         return false;
                     }
-                    if (maze.isWall(pos)) {
+                    if (Boolean.TRUE.equals(maze.isWall(pos))) {
                         return false;
                     }
                 }
                 case 'R' -> dir = dir.turnRight();
                 case 'L' -> dir = dir.turnLeft();
+                default -> throw new IllegalArgumentException("Incorrect path input");
             }
-            logger.debug("Current Position: " + pos);
+            logger.debug("Current Position: {}", pos);
         }
 
         return pos.equals(endPos);

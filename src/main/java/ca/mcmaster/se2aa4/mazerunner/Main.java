@@ -4,6 +4,7 @@ import org.apache.commons.cli.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+
 public class Main {
 
     private static final Logger logger = LogManager.getLogger();
@@ -33,14 +34,12 @@ public class Main {
             function.impliment(maze);
 
         } catch (Exception e) {
-            System.err.println("MazeSolver failed.  Reason: " + e.getMessage());
-            logger.error("MazeSolver failed.  Reason: " + e.getMessage());
+            logger.error("MazeSolver failed.  Reason: {}", e.getMessage());
             logger.error("PATH NOT COMPUTED");
         }
 
         logger.info("End of MazeRunner");
     }
-
 
     /**
      * Get options for CLI parser.

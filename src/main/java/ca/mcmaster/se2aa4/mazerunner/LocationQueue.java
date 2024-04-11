@@ -18,9 +18,9 @@ public class LocationQueue {
         this.direction = dir;
         this.pathIndex = index;
         this.length = 0;
-        posQueue = new ArrayDeque<Position>();
-        dirQueue = new ArrayDeque<Direction>();
-        indexQueue = new ArrayDeque<BigInteger>();
+        posQueue = new ArrayDeque<>();
+        dirQueue = new ArrayDeque<>();
+        indexQueue = new ArrayDeque<>();
         add(pos,dir,index);
     }
     public void add(Position pos, Direction dir, BigInteger index){

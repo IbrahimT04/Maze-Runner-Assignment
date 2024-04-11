@@ -53,12 +53,9 @@ public class TremauxSolver implements MazeSolver {
                 }
             }
 
-            if (previousPos != null && getMazeNeighbors(previousPos).size() > 2) {
-                marks[currentPos.y()][currentPos.x()] += 1;
-            } else if (getMazeNeighbors(newPos).size() > 2) {
+            if ((previousPos != null && getMazeNeighbors(previousPos).size() > 2)||(getMazeNeighbors(newPos).size() > 2)) {
                 marks[currentPos.y()][currentPos.x()] += 1;
             }
-
             previousPos = currentPos;
             currentPos = newPos;
         }
@@ -86,17 +83,19 @@ public class TremauxSolver implements MazeSolver {
     private List<Position> getMazeNeighbors(Position pos) {
         List<Position> neighbors = new ArrayList<>();
 
+        if (pos == null) throw new NullPointerException("Current position doesn't exist");
+
         Position left = pos.add(new Position(-1, 0));
-        if (left.x() >= 0 && !maze.isWall(left)) neighbors.add(left);
+        if (left.x() >= 0 && Boolean.FALSE.equals(maze.isWall(left))) neighbors.add(left);
 
         Position right = pos.add(new Position(1, 0));
-        if (right.x() < maze.getSizeX() && !maze.isWall(right)) neighbors.add(right);
+        if (right.x() < maze.getSizeX() && Boolean.FALSE.equals(maze.isWall(right))) neighbors.add(right);
 
         Position up = pos.add(new Position(0, -1));
-        if (up.y() >= 0 && !maze.isWall(up)) neighbors.add(up);
+        if (up.y() >= 0 && Boolean.FALSE.equals(maze.isWall(up))) neighbors.add(up);
 
         Position down = pos.add(new Position(0, 1));
-        if (down.y() < maze.getSizeY() && !maze.isWall(down)) neighbors.add(down);
+        if (down.y() < maze.getSizeY() && Boolean.FALSE.equals(maze.isWall(down))) neighbors.add(down);
 
         return neighbors;
     }
@@ -116,38 +115,44 @@ public class TremauxSolver implements MazeSolver {
             Position rightPos = pos.move(dir.turnRight());
             Position leftPos = pos.move(dir.turnLeft());
             Position forwardPos = pos.move(dir);
-            if (maze.isInBounds(rightPos) && !maze.isWall(rightPos) && marks[rightPos.y()][rightPos.x()] == 1) {
+            if (validPosCheck(rightPos, 1)) {
                 path.addStep('R');
                 path.addStep('F');
                 dir = dir.turnRight();
                 pos = rightPos;
-            } else if (maze.isInBounds(leftPos) && !maze.isWall(leftPos) && marks[leftPos.y()][leftPos.x()] == 1) {
+            } else if (validPosCheck(leftPos, 1)) {
                 path.addStep('L');
                 path.addStep('F');
                 dir = dir.turnLeft();
                 pos = leftPos;
-            } else if (maze.isInBounds(forwardPos) && !maze.isWall(forwardPos) && marks[forwardPos.y()][forwardPos.x()] == 1) {
+            } else if (validPosCheck(forwardPos, 1)) {
                 path.addStep('F');
                 pos = forwardPos;
             } else {
-                if (maze.isInBounds(rightPos) && !maze.isWall(rightPos) && marks[rightPos.y()][rightPos.x()] == 0) {
+                if (validPosCheck(rightPos, 0)) {
                     path.addStep('R');
                     path.addStep('F');
                     dir = dir.turnRight();
                     pos = rightPos;
-                } else if (maze.isInBounds(leftPos) && !maze.isWall(leftPos) && marks[leftPos.y()][leftPos.x()] == 0) {
+                } else if (validPosCheck(leftPos, 0)) {
                     path.addStep('L');
                     path.addStep('F');
                     dir = dir.turnLeft();
                     pos = leftPos;
-                } else if (maze.isInBounds(forwardPos) && !maze.isWall(forwardPos) && marks[forwardPos.y()][forwardPos.x()] == 0) {
+                } else if (validPosCheck(forwardPos, 0)) {
                     path.addStep('F');
                     pos = forwardPos;
                 } else {
-                    throw new RuntimeException("Invalid maze.");
+                    throw new IllegalStateException("Invalid maze.");
                 }
             }
         }
         return path;
+    }
+
+    private boolean validPosCheck(Position pos, int visited){
+        return maze.isInBounds(pos)
+         && !maze.isWall(pos)
+         && marks[pos.y()][pos.x()] == visited;
     }
 }

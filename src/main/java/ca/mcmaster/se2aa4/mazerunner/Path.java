@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Path {
-    private final List<Character> path = new ArrayList<>();
+    private final List<Character> algoPath = new ArrayList<>();
 
     /**
      * Initialize an empty Path.
@@ -37,8 +37,8 @@ public class Path {
      */
     public String expandFactorizedStringPath(String path) {
         StringBuilder expanded = new StringBuilder();
-
-        for (int i = 0; i < path.length(); i++) {
+        int i = 0;
+        while(i < path.length()){
             if (!Character.isDigit(path.charAt(i))) {
                 expanded.append(path.charAt(i));
             } else {
@@ -52,6 +52,7 @@ public class Path {
                 String step = String.valueOf(path.charAt(i)).repeat(count);
                 expanded.append(step);
             }
+            i++;
         }
 
         return expanded.toString();
@@ -63,7 +64,7 @@ public class Path {
      * @return Chars of Path
      */
     public List<Character> getPathSteps() {
-        return new ArrayList<>(this.path);
+        return new ArrayList<>(this.algoPath);
     }
 
     /**
@@ -72,7 +73,7 @@ public class Path {
      * @param step The step that needs to be added.
      */
     public void addStep(Character step) {
-        path.add(step);
+        algoPath.add(step);
     }
 
     /**
@@ -83,7 +84,7 @@ public class Path {
     public String getCanonicalForm() {
         StringBuilder sb = new StringBuilder();
 
-        for (Character c : path) {
+        for (Character c : algoPath) {
             if (sb.isEmpty() || sb.charAt(sb.length() - 1) == c) {
                 sb.append(c);
             } else {
@@ -102,11 +103,11 @@ public class Path {
      */
     public String getFactorizedForm() {
         StringBuilder sb = new StringBuilder();
-
-        for (int i = 0; i < path.size(); i++) {
-            Character current = path.get(i);
+        int i = 0;
+        while (i < algoPath.size()){
+            Character current = algoPath.get(i);
             int count = 0;
-            while (i < path.size() && current == path.get(i)) {
+            while (i < algoPath.size() && current.equals(algoPath.get(i))) {
                 count++;
                 i++;
             }
@@ -118,7 +119,7 @@ public class Path {
                 sb.append(current);
             }
 
-            if (i != path.size()) {
+            if (i != algoPath.size()) {
                 sb.append(' ');
             }
             i--;

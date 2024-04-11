@@ -17,7 +17,7 @@ public class Benchmark extends PathFinder {
      * @throws Exception If provided method does not exist
      */
     @Override
-    public void impliment(Maze maze) throws Exception {
+    public void impliment(Maze maze) throws IllegalArgumentException {
         this.maze = maze;
         String method = cmd.getOptionValue("method");
         String baseline = cmd.getOptionValue("baseline");
@@ -27,13 +27,13 @@ public class Benchmark extends PathFinder {
 
         // Used both timePath methods to show ease of use
         float time1 = timePath(solver1);
-        System.out.printf("Runtime %s = %.2f ms\n", method, time1);
+        logger.info("Runtime %s = %.2f ms %n", method, time1);
         Path path = solver1.solve(maze);
         String path1 = path.getCanonicalForm();
 
         String path2 = timePath(solver2, baseline);
 
-        System.out.printf("Runtime Speedup = %.2f\n", getSpeedup(path1, path2));
+        logger.info("Runtime Speedup = %.2f %n", getSpeedup(path1, path2));
     }
 
     private String timePath(MazeSolver solver, String method){
@@ -41,7 +41,7 @@ public class Benchmark extends PathFinder {
         Path path = solver.solve(maze);
         long mTimeEnd = System.nanoTime();
         float methodTime = (mTimeEnd -mTimeStart)/1000000f;
-        System.out.printf("Runtime %s = %.2f ms\n", method, methodTime);
+        System.out.printf("Runtime %s = %.2f ms %n", method, methodTime);
         return path.getCanonicalForm();
     }
 
@@ -50,12 +50,11 @@ public class Benchmark extends PathFinder {
         long mTimeStart = System.nanoTime();
         solver.solve(maze);
         long mTimeEnd = System.nanoTime();
-        float methodTime = (mTimeEnd -mTimeStart)/1000000f;
-        return methodTime;
+        return (mTimeEnd -mTimeStart)/1000000f;
     }
 
-    public static float getSpeedup(String path1, String path2) throws Exception{
-        if (path1.length() == 0) throw new Exception("The method path '" + path1 + "' has a length of 0.");
+    public static float getSpeedup(String path1, String path2) throws ArithmeticException{
+        if (path1.length() == 0) throw new ArithmeticException("The method path '" + path1 + "' has a length of 0.");
         return path2.length()*1f/path1.length();
  
     } 
