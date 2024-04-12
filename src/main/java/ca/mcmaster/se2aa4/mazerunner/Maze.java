@@ -5,13 +5,14 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Maze {
     private static final Logger logger = LogManager.getLogger();
 
-    private final List<List<Boolean>> maze = new ArrayList<>();
+    private final List<List<Boolean>> myMaze = new ArrayList<>();
 
     private final Position start;
     private final Position end;
@@ -22,9 +23,10 @@ public class Maze {
      * @param filePath File path of the maze file
      * @throws Exception If maze cannot be read, or maze has no start or end
      */
-    public Maze(String filePath) throws Exception {
-        logger.debug("Reading the maze from file " + filePath);
-        BufferedReader reader = new BufferedReader(new FileReader(filePath));
+    public Maze(String filePath) throws IOException {
+        logger.debug("Reading the maze from file {}", filePath);
+        FileReader fileReader = new FileReader(filePath); 
+        BufferedReader reader = new BufferedReader(fileReader);
         String line;
         while ((line = reader.readLine()) != null) {
             List<Boolean> newLine = new ArrayList<>();
@@ -35,9 +37,10 @@ public class Maze {
                     newLine.add(false);
                 }
             }
-            maze.add(newLine);
+            myMaze.add(newLine);
         }
         // Making sure to close reader
+        fileReader.close();
         reader.close();
         start = findStart();
         end = findEnd();
@@ -49,14 +52,14 @@ public class Maze {
      * @return The start position
      * @throws Exception If no valid start position exists
      */
-    private Position findStart() throws Exception {
-        for (int i = 0; i < maze.size(); i++) {
+    private Position findStart() throws IllegalStateException {
+        for (int i = 0; i < myMaze.size(); i++) {
             Position pos = new Position(0, i);
-            if (!isWall(pos)) {
+            if (Boolean.FALSE.equals(isWall(pos))) {
                 return pos;
             }
         }
-        throw new Exception("Invalid maze (no start position available)");
+        throw new IllegalStateException("Invalid maze (no start position available)");
     }
 
     /**
@@ -65,14 +68,14 @@ public class Maze {
      * @return The end position
      * @throws Exception If no valid end position exists
      */
-    private Position findEnd() throws Exception {
-        for (int i = 0; i < maze.size(); i++) {
-            Position pos = new Position(maze.getFirst().size() - 1, i);
-            if (!isWall(pos)) {
+    private Position findEnd() throws IllegalStateException {
+        for (int i = 0; i < myMaze.size(); i++) {
+            Position pos = new Position(myMaze.getFirst().size() - 1, i);
+            if (Boolean.FALSE.equals(isWall(pos))) {
                 return pos;
             }
         }
-        throw new Exception("Invalid maze (no end position available)");
+        throw new IllegalStateException("Invalid maze (no end position available)");
     }
 
     /**
@@ -82,7 +85,7 @@ public class Maze {
      * @return If position is a wall
      */
     public Boolean isWall(Position pos) {
-        return maze.get(pos.y()).get(pos.x());
+        return myMaze.get(pos.y()).get(pos.x());
     }
 
     /**
@@ -109,7 +112,7 @@ public class Maze {
      * @return Horizontal size
      */
     public int getSizeX() {
-        return this.maze.getFirst().size();
+        return this.myMaze.getFirst().size();
     }
 
     /**
@@ -118,7 +121,7 @@ public class Maze {
      * @return Vertical size
      */
     public int getSizeY() {
-        return this.maze.size();
+        return this.myMaze.size();
     }
 
     

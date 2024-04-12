@@ -1,17 +1,17 @@
 package ca.mcmaster.se2aa4.mazerunner;
-import org.apache.commons.cli.CommandLine;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class PathChecker implements MazeFunctions {
 
     private static final Logger logger = LogManager.getLogger();
-    private CommandLine cmd;
+    private Path path;
     private Maze maze;
 
-    public PathChecker(CommandLine cmd){
+    public PathChecker(String enteredPath,Maze maze){
         logger.info("Validating path");
-        this.cmd = cmd;
+        this.path = new Path(enteredPath);
+        this.maze = maze;
     }
 
     /**
@@ -19,13 +19,11 @@ public class PathChecker implements MazeFunctions {
      * @throws Exception If provided method does not exist
      */
     @Override
-    public void impliment(Maze maze){
-        this.maze = maze;
-        Path path = new Path(cmd.getOptionValue("p"));
-        if (Boolean.TRUE.equals(validatePath(path))) {
-            logger.info("correct path %n");
+    public void impliment(){
+        if (Boolean.TRUE.equals(validatePath())) {
+            logger.info("correct path");
         } else {
-            logger.info("incorrect path %n");
+            logger.info("incorrect path");
         }
     }
 
@@ -36,8 +34,8 @@ public class PathChecker implements MazeFunctions {
      * @param path The path to valid
      * @return If path is valid
      */
-    public Boolean validatePath(Path path) {
-        return validatePathDir(path, maze.getStart(), Direction.RIGHT, maze.getEnd()) || validatePathDir(path, maze.getEnd(), Direction.LEFT, maze.getStart());
+    public Boolean validatePath() {
+        return validatePathDir(maze.getStart(), Direction.RIGHT, maze.getEnd()) || validatePathDir(maze.getEnd(), Direction.LEFT, maze.getStart());
     }
 
     /**
@@ -49,7 +47,7 @@ public class PathChecker implements MazeFunctions {
      * @param endPos Ending position
      * @return If path is valid
      */
-    private Boolean validatePathDir(Path path, Position startPos, Direction startDir, Position endPos) {
+    private Boolean validatePathDir( Position startPos, Direction startDir, Position endPos) {
         Position pos = startPos;
         Direction dir = startDir;
         for (char c : path.getPathSteps()) {

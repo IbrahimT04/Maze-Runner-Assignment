@@ -1,16 +1,16 @@
 package ca.mcmaster.se2aa4.mazerunner;
-import org.apache.commons.cli.CommandLine;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class PathFinder implements MazeFunctions {
 
     private static final Logger logger = LogManager.getLogger();
-    protected CommandLine cmd;
+    protected String method;
     protected Maze maze;
     
-    public PathFinder(CommandLine cmd){
-        this.cmd = cmd;
+    public PathFinder(String method, Maze maze){
+        this.method = method;
+        this.maze = maze;
     }
 
     /**
@@ -18,10 +18,8 @@ public class PathFinder implements MazeFunctions {
      * @throws Exception If provided method does not exist
      */
     @Override
-    public void impliment(Maze maze) throws IllegalArgumentException {
-        this.maze = maze;
+    public void impliment() throws IllegalArgumentException {
         logger.info("Finding Path");
-        String method = cmd.getOptionValue("method", "righthand");
         MazeSolver solver = commandReader(method);
         Path path = solver.solve(maze);
         logger.info(path.getFactorizedForm());

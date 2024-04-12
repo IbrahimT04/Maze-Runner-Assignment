@@ -1,4 +1,8 @@
 package ca.mcmaster.se2aa4.mazerunner;
 public interface MazeFunctions {
-    public void impliment(Maze maze) throws IllegalArgumentException;
+     /**
+     * Do the entered Maze function and return.
+     *
+     */
+    public void impliment() throws IllegalArgumentException;
 }

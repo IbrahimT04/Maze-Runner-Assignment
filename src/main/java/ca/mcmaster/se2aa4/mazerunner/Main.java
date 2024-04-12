@@ -18,20 +18,25 @@ public class Main {
 
         try {
             cmd = parser.parse(getParserOptions(), args);
+            // Necessory Parameters
             String filePath = cmd.getOptionValue('i');
             Maze maze = new Maze(filePath);
+            // Optional Parameters
+            String method = cmd.getOptionValue("method", "righthand");
+            String baseline = cmd.getOptionValue("baseline");
+            String path = cmd.getOptionValue("p");
 
-            if (cmd.getOptionValue("baseline") != null){
-                function = new Benchmark(cmd);
+            if (baseline != null){
+                function = new Benchmark(method, baseline, maze);
 
-            } else if (cmd.getOptionValue("p") != null) {
-                function = new PathChecker(cmd);  
+            } else if (path != null) {
+                function = new PathChecker(path,maze);
                               
             } else {
-                function = new PathFinder(cmd);
+                function = new PathFinder(method,maze);
             }
 
-            function.impliment(maze);
+            function.impliment();
 
         } catch (Exception e) {
             logger.error("MazeSolver failed.  Reason: {}", e.getMessage());

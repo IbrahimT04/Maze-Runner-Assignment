@@ -28,16 +28,10 @@ public class BFSSolver implements MazeSolver {
         Position pos = maze.getStart();
         BigInteger i = BigInteger.valueOf(1);
         
-        BigInteger one = BigInteger.valueOf(1);
-        BigInteger three = BigInteger.valueOf(3);
         
 
         Position exit = maze.getEnd();
-        for (int a=0;a<maze.getSizeX();a++){
-            for (int b=0;b<maze.getSizeY();b++){
-                marked[b][a]= false;
-            }
-        }
+        for (int a=0;a<maze.getSizeX();a++) for (int b=0;b<maze.getSizeY();b++)marked[b][a]= false;
         LocationQueue currentLocat = new LocationQueue(pos, dir, i);
 
         while (!pos.equals(exit) && !currentLocat.isEmpty()) {
@@ -52,30 +46,8 @@ public class BFSSolver implements MazeSolver {
                 
                 // Go to the position (Use ternary tree)
                 marked[pos.y()][pos.x()] = true;
-                
-                Position leftPos = pos.move(dir.turnLeft());
-                BigInteger leftIndex = i.multiply(three);
+                addNeighbours(currentLocat, pos, dir, i);
 
-                Position rightPos = pos.move(dir.turnRight());
-                BigInteger rightIndex = leftIndex.subtract(one);
-                
-                Position forwardPos = pos.move(dir);
-                BigInteger forwardIndex = leftIndex.add(one);
-
-                if (maze.isInBounds(leftPos) && !maze.isWall(leftPos) && !marked[leftPos.y()][leftPos.x()]){
-                    // Ternary tree add left node with value "L"
-                    currentLocat.add(leftPos, dir.turnLeft(), leftIndex);
-                }
-
-                if (maze.isInBounds(rightPos) && !maze.isWall(rightPos) && !marked[rightPos.y()][rightPos.x()]){
-                    // Ternary tree add right node with value "R"
-                    currentLocat.add(rightPos, dir.turnRight(), rightIndex);
-                }
-                
-                if (maze.isInBounds(forwardPos) && !maze.isWall(forwardPos) && !marked[forwardPos.y()][forwardPos.x()]){
-                    // Ternary tree add middle node with value "F"
-                    currentLocat.add(forwardPos, dir, forwardIndex);
-                }
             }
         }
         if (!pos.equals(exit))throw new IllegalStateException("Algorithm Error: Exit not found or doesn't exist");
@@ -112,5 +84,41 @@ public class BFSSolver implements MazeSolver {
         }
         while (!tempStorage.isEmpty()) path.addStep(tempStorage.pop());
         return path;
+    }
+
+    private void addNeighbours(LocationQueue currentLocat, Position pos, Direction dir, BigInteger i){
+
+        BigInteger one = BigInteger.valueOf(1);
+        BigInteger three = BigInteger.valueOf(3);
+        
+        Position leftPos = pos.move(dir.turnLeft());
+        BigInteger leftIndex = i.multiply(three);
+
+        Position rightPos = pos.move(dir.turnRight());
+        BigInteger rightIndex = leftIndex.subtract(one);
+        
+        Position forwardPos = pos.move(dir);
+        BigInteger forwardIndex = leftIndex.add(one);
+
+        if (validPosCheck(leftPos)){
+            // Ternary tree add left node with value "L"
+            currentLocat.add(leftPos, dir.turnLeft(), leftIndex);
+        }
+
+        if (validPosCheck(rightPos)){
+            // Ternary tree add right node with value "R"
+            currentLocat.add(rightPos, dir.turnRight(), rightIndex);
+        }
+        
+        if (validPosCheck(forwardPos)){
+            // Ternary tree add middle node with value "F"
+            currentLocat.add(forwardPos, dir, forwardIndex);
+        }
+    }
+
+    private boolean validPosCheck(Position pos){
+        return maze.isInBounds(pos)
+         && !maze.isWall(pos)
+         && !marked[pos.y()][pos.x()];
     }
 }
