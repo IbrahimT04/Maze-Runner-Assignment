@@ -1,20 +1,20 @@
 @startuml Exploration
-actor CommandLine
+actor User
 participant Main
 participant MazeFunctions
 participant MazeSolver
 
-CommandLine -> Main
+User -> Main:CommandLine
 alt commandLine prompts 
-Main -> MazeFunctions: Benchmark()
+Main -> MazeFunctions: Benchmark(method: String, baseline: String, maze: Maze)
 else
-Main -> MazeFunctions: PathChecker()
+Main -> MazeFunctions: PathChecker(path: String, maze: Maze)
 else
-Main -> MazeFunctions: PathFinder()
+Main -> MazeFunctions: PathFinder(method: String, maze: Maze)
 end
 MazeFunctions -> Main
 Main -> MazeFunctions: Impliment()
-alt
+alt Algorithms
 MazeFunctions -> MazeSolver: RightHandSolver()
 else
 MazeFunctions -> MazeSolver: TremauxSolver()
@@ -24,8 +24,11 @@ end
 MazeSolver -> MazeFunctions
 MazeFunctions -> MazeSolver: solve(maze: Maze)
 MazeSolver -> MazeFunctions: return Path
+note bottom
+Print the Path
+end note
 MazeFunctions -> Main
-Main -> CommandLine
+Main -> User
 
 
 @enduml

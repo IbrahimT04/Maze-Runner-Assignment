@@ -1,7 +1,10 @@
 <<<<<<< HEAD
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/IPHBGZ6v)
 =======
-# Assignment A1 - Maze Runner
+# Assignment A3 - Maze Runner Evolution
+* **Credits**:[AlexandreLachanceGit]
+* **Credits**:[mosser]
+* **This assignment 3 code was extended from A1-solution written my Alexandre Lachance**
 
 * **Student**: [IBRAHIM TARIQ](tariqi2@mcmaster.ca)
 * **Program**: B. Eng. In Software Engineering
@@ -30,13 +33,14 @@ This program explores a maze, finding a path from an entry point to an exit one.
 - The program takes as input a maze and print the path on the standard output.
     - For this assignment, the path does not have to be the shortest one.
 - The program can take a path as input and verify if it's a legit one.
+- The program can take two methods and compare them.
 
 ## How to run this software?
 
 To build the program, simply package it with Maven:
 
 ```
-mosser@azrael A1-Template % mvn -q clean package 
+ mvn -q clean package 
 ```
 
 ### Provided version (starter code)
@@ -44,7 +48,7 @@ mosser@azrael A1-Template % mvn -q clean package
 The starter code assumes the maze file name is the first argument.
 
 ```
-mosser@azrael A1-Template % java -jar target/mazerunner.jar ./examples/small.maz.txt
+ java -jar target/mazerunner.jar ./examples/small.maz.txt
 ** Starting Maze Runner
 **** Reading the maze from file ./examples/small.maz.txt
 WALL WALL WALL WALL WALL WALL WALL WALL WALL WALL WALL 
@@ -66,7 +70,7 @@ PATH NOT COMPUTED
 When called on a non-existing file. it prints an error message
 
 ```
-mosser@azrael A1-Template % java -jar target/mazerunner.jar ./examples/small.maz.txtd
+ java -jar target/mazerunner.jar ./examples/small.maz.txtd
 ** Starting Maze Runner
 **** Reading the maze from file ./examples/small.maz.txtd
 /!\ An error has occured /!\
@@ -84,34 +88,33 @@ The delivered program at the end of this assignment should use the following fla
 - `-i MAZE_FILE`: specifies the filename to be used;
 - `-p PATH_SEQUENCE`: activates the path verification mode to validate that PATH_SEQUENCE is correct for the maze
 
-If you are also delivering the bonus, your program will react to a third flag:
-
-- `-method {tremaux, righthand}`: specifies which path computation method to use. (default is right hand)
+- `-method {tremaux, bfs, righthand}`: specifies which path computation method to use. (default is right hand)
+- `-baseline {tremaux, bfs, righthand}`: specifies which baseline is used to compare.
 
 #### Examples
 
 When no logs are activated, the programs only print the computed path on the standard output.
 
 ```
-mosser@azrael A1-Template % java -jar target/mazerunner.jar -i ./examples/straight.maz.txt
+ java -jar target/mazerunner.jar -i ./examples/straight.maz.txt
 4F
-mosser@azrael A1-Template %
+
 ```
 
 If a given path is correct, the program prints the message `correct path` on the standard output.
 
 ```
-mosser@azrael A1-Template % java -jar target/mazerunner.jar -i ./examples/straight.maz.txt -p 4F
+ java -jar target/mazerunner.jar -i ./examples/straight.maz.txt -p 4F
 correct path
-mosser@azrael A1-Template %
+
 ```
 
 If a given path is incorrect, the program prints the message `incorrect path` on the standard output.
 
 ```
-mosser@azrael A1-Template % java -jar target/mazerunner.jar -i ./examples/straight.maz.txt -p 3F
+ java -jar target/mazerunner.jar -i ./examples/straight.maz.txt -p 3F
 inccorrect path
-mosser@azrael A1-Template %
+
 ```
 
 >>>>>>> 87c194d (Solution)

@@ -9,7 +9,7 @@ class BenchmarkTest {
     @Test
     void timeCheck() {
         try {
-            myMaze = new Maze("./examples/medium.maz.txt");
+            myMaze = new Maze("./examples/straight.maz.txt");
         }
         catch (Exception IOException) {
             assertTrue(false);

@@ -25,7 +25,7 @@ public class Benchmark extends PathFinder {
         // Used both timePath methods to show ease of use
         float time1 = timePath(solver1);
         time1 = Math.round(time1*100)/100f;
-        logger.info("Runtime {} = {} ms \n", method, time1);
+        logger.info("Runtime {} = {} ms", method, time1);
 
         Path path = solver1.solve(maze);
         String path1 = path.getCanonicalForm();
@@ -34,7 +34,7 @@ public class Benchmark extends PathFinder {
         float speedup = getSpeedup(path1, path2);
         
         speedup = Math.round(speedup*100)/100f;
-        logger.info("Runtime Speedup = {} \n", speedup);
+        logger.info("Runtime Speedup = {}", speedup);
     }
 
     private String timePath(MazeSolver solver, String method){
@@ -45,7 +45,7 @@ public class Benchmark extends PathFinder {
         float methodTime = (mTimeEnd -mTimeStart)/1000000f;
         methodTime = Math.round(methodTime*100)/100f;
 
-        logger.info("Runtime {} = {} ms \n", method, methodTime);
+        logger.info("Runtime {} = {} ms", method, methodTime);
         return path.getCanonicalForm();
     }
 
