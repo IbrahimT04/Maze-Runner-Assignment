@@ -26,22 +26,23 @@ public class Maze {
     public Maze(String filePath) throws IOException {
         logger.debug("Reading the maze from file {}", filePath);
         FileReader fileReader = new FileReader(filePath); 
-        BufferedReader reader = new BufferedReader(fileReader);
-        String line;
-        while ((line = reader.readLine()) != null) {
-            List<Boolean> newLine = new ArrayList<>();
-            for (int idx = 0; idx < line.length(); idx++) {
-                if (line.charAt(idx) == '#') {
-                    newLine.add(true);
-                } else if (line.charAt(idx) == ' ') {
-                    newLine.add(false);
+        try (BufferedReader reader = new BufferedReader(fileReader)){ 
+            String line;
+            while ((line = reader.readLine()) != null) {
+                List<Boolean> newLine = new ArrayList<>();
+                for (int idx = 0; idx < line.length(); idx++) {
+                    if (line.charAt(idx) == '#') {
+                        newLine.add(true);
+                    } else if (line.charAt(idx) == ' ') {
+                        newLine.add(false);
+                    }
                 }
+                myMaze.add(newLine);
             }
-            myMaze.add(newLine);
         }
         // Making sure to close reader
         fileReader.close();
-        reader.close();
+        
         start = findStart();
         end = findEnd();
     }

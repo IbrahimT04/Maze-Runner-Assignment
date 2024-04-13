@@ -1,12 +1,118 @@
-@startuml SolvingMaze
-interface MazeFunctions
+@startuml myMazeRunner
+package "ca.mcmaster.se2aa4.mazerunner" {
+    enum Direction {
+        UP
+        DOWN
+        LEFT
+        RIGHT
+        +turnRight(): Direction
+        +turnLeft(): Direction
+    }
 
+    interface MazeFunctions {
+        +impliment():
+    }
 
-MazeFunctions --|> PathChecker
+    class Benchmark {
+        -baseline: String
+        +timePath(solver: MazeSolver): float
+    }   
 
-class PathChecker {
-    + PathChecker(CommandLine cmd, Maze maze): void
-    + impliment(): void
+    class PathFinder {
+        -method: String
+        #commandReader(algorithm: String): Options
+    }
+
+    class PathChecker{
+        -path: Path
+        +validatePath(): Boolean
+    }
+
+    class LocationQueue {
+        -Queue<Position> posQueue
+        -Queue<Direction> currentDir
+        -Queue<BigInteger> index
+        +getPosition(): Position
+        +getDirection(): Direction
+        +getIndex(): BigInteger
+        +isEmpty(): Boolean
+    }
+
+    class Position {
+        x: int
+        y: int
+    }
+
+    class Path {
+        -algoPath: List<Character>
+        +addStep(step: Character):
+        +getCanonicalForm(): String
+        +getFactoredForm(): String
+    }
+    
+    class BFSSolver{
+        -marked: boolean[][]
+        -retraceSteps(index: BigInteger):
+    } 
+    
+    class Main{
+        +main(args: String):
+        -getParserOptions():
+    }
+
+    interface MazeSolver{
+        +solve(maze: Maze):
+    }
+
+    class RightHandSolver{}
+    
+    class TremauxSolver{
+        -int[][] marks
+        -tracePath():
+    }
+
+    class Maze {
+        -start: Position
+        -end: Position
+        +isWall(pos:Position): Boolean
+        +isInBounds(pos:Position): Boolean
+    }
+
 }
+
+
+Main --> Maze
+
+Benchmark ..|> PathFinder
+PathFinder ..|> MazeFunctions
+PathChecker ..|> MazeFunctions
+
+PathFinder --> MazeSolver
+
+
+
+BFSSolver ..|> MazeSolver
+RightHandSolver ..|> MazeSolver
+TremauxSolver ..|> MazeSolver
+
+MazeSolver *-- Maze
+
+Main o-- MazeFunctions
+
+
+LocationQueue o-- Position
+LocationQueue o-- Direction
+
+BFSSolver o-- LocationQueue
+BFSSolver --> Path
+
+TremauxSolver --> Path
+TremauxSolver --> Direction
+TremauxSolver --> Position
+
+RightHandSolver *-- Path
+RightHandSolver o-- Direction
+RightHandSolver o-- Position
+
 
 @enduml
